@@ -1,0 +1,22 @@
+{
+  "name": "@philc/lint-rules",
+  "version": "0.1.0",
+  "license": "MIT",
+  "exports": "./mod.js",
+  "publish": {
+    "include": ["mod.js", "mod.d.ts", "rules/*.js", "README.md", "LICENSE"],
+    "exclude": ["rules/*_test.js"]
+  },
+  "fmt": {
+    "lineWidth": 100
+  },
+  "imports": {
+    "@std/assert": "jsr:@std/assert@^1.0.0"
+  },
+  "lint": {
+    "plugins": ["./mod.js"]
+  },
+  "tasks": {
+    "test": "deno test"
+  }
+}
