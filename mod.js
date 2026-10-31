@@ -20,11 +20,13 @@
  */
 
 import curly from "./rules/curly.js";
+import namespaceImports from "./rules/namespace_imports.js";
 
 /** The plugin. Rules are reported with the "lint-rules/" prefix, e.g. "lint-rules/curly". */
 export default {
   name: "lint-rules",
   rules: {
     curly,
+    "namespace-imports": namespaceImports,
   },
 };
