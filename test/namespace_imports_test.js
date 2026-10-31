@@ -1,10 +1,7 @@
 import { assertEquals } from "@std/assert";
-import plugin from "../mod.js";
+import * as helpers from "./helpers.js";
 
-function lint(source) {
-  return Deno.lint.runPlugin(plugin, "test.js", source)
-    .filter((d) => d.id == "lint-rules/namespace-imports");
-}
+const lint = (source) => helpers.lint(source, "lint-rules/namespace-imports");
 
 const isAllowed = (source) => lint(source).length == 0;
 

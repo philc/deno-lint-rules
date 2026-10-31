@@ -4,8 +4,7 @@
   "license": "MIT",
   "exports": "./mod.js",
   "publish": {
-    "include": ["mod.js", "mod.d.ts", "rules/*.js", "README.md", "LICENSE"],
-    "exclude": ["rules/*_test.js"]
+    "include": ["mod.js", "mod.d.ts", "rules/*.js", "README.md", "LICENSE"]
   },
   "fmt": {
     "lineWidth": 100
