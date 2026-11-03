@@ -1,9 +1,9 @@
 import { assertEquals } from "@std/assert";
 import * as helpers from "./helpers.js";
 
-const lint = (source) => helpers.lint(source, "lint-rules/namespace-imports");
+const lint = (source, filename) => helpers.lint(source, "lint-rules/namespace-imports", filename);
 
-const isAllowed = (source) => lint(source).length == 0;
+const isAllowed = (source, filename) => lint(source, filename).length == 0;
 
 Deno.test("namespace-imports: allow namespace, default, and side-effect imports", () => {
   assertEquals(isAllowed(`import * as s3 from "@aws-sdk/client-s3";`), true);
@@ -64,4 +64,19 @@ Deno.test("namespace-imports: treat vendored paths as packages", () => {
     isAllowed(`import { XMLParser } from "../node_modules/fast-xml-parser/index.js";`),
     true,
   );
+});
+
+Deno.test("namespace-imports: allow named package imports in test files", () => {
+  const source = `import { assert, context, should } from "@philc/shoulda";`;
+  assertEquals(isAllowed(source), false);
+  assertEquals(isAllowed(source, "/src/cut_test.js"), true);
+  assertEquals(isAllowed(source, "/src/cut.test.ts"), true);
+  assertEquals(isAllowed(source, "/src/test/helpers.js"), true);
+  assertEquals(isAllowed(source, "/src/tests/cut.js"), true);
+  assertEquals(isAllowed(source, "/src/latest_test_data.js"), false);
+  assertEquals(isAllowed(source, "/src/contest.js"), false);
+});
+
+Deno.test("namespace-imports: require namespace imports of own modules in test files", () => {
+  assertEquals(isAllowed(`import { plan } from "../cut.js";`, "/src/test/cut_test.js"), false);
 });

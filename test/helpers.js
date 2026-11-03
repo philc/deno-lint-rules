@@ -3,9 +3,9 @@
 import plugin from "../mod.js";
 
 // Returns the lint errors for `source`. If `ruleId` is given, e.g. "lint-rules/curly", returns
-// only that rule's errors.
-export function lint(source, ruleId) {
-  const errors = Deno.lint.runPlugin(plugin, "test.js", source);
+// only that rule's errors. `filename` is the path the source is linted as.
+export function lint(source, ruleId, filename = "main.js") {
+  const errors = Deno.lint.runPlugin(plugin, filename, source);
   return ruleId ? errors.filter((e) => e.id == ruleId) : errors;
 }
 

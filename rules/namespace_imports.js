@@ -17,11 +17,20 @@
 // and `fileTree.Tree`, not `fileTree.FileTree`.
 // Paths with a vendor/ or node_modules/ segment are treated as packages, since their names can't
 // be changed.
+//
+// In test files, named imports from packages are always allowed, so tests can use a harness's
+// helpers bare: `import { assert, context, should } from "@philc/shoulda"`.
 
 // Returns whether the specifier refers to the project's own code, rather than to a package.
 function isOwnCode(specifier) {
   const isPath = /^(\.{1,2}\/|\/|file:)/.test(specifier);
   return isPath && !/(^|\/)(vendor|node_modules)\//.test(specifier);
+}
+
+// Returns whether the file is a test: one named like foo_test.js or foo.test.js, or one in a test/
+// or tests/ directory.
+function isTestFile(filename) {
+  return /[._]test\.[cm]?[jt]sx?$/.test(filename) || /(^|\/)tests?\//.test(filename);
 }
 
 // File names which carry no meaning of their own, so the directory names the module instead.
@@ -61,6 +70,9 @@ export default {
         }
         const specifier = node.source.value;
         if (!isOwnCode(specifier)) {
+          if (isTestFile(context.filename)) {
+            return;
+          }
           const name = moduleName(specifier);
           const names = named.map((s) => s.imported.name ?? s.imported.value);
           if (names.every((n) => stutters(n, name))) {

@@ -90,12 +90,20 @@ There, a name which would stutter is better fixed by renaming the export: `cut.p
 `vendor/` or `node_modules/` directory are treated as packages, since their export names can't be
 changed.
 
+In test files, named imports from packages are always allowed, so that tests can call a test
+harness's helpers without a prefix. A test file is one named like `cut_test.js` or `cut.test.js`, or
+one in a `test/` or `tests/` directory. Imports of the project's own modules still need to be
+namespace imports.
+
+```js
+import { assert, context, should } from "@philc/shoulda"; // Allowed in cut_test.js.
+```
+
 Packages are recognized by the form of the specifier, since lint plugins can't see the import map. A
 bare specifier which the import map points at local code, like `@/cut.js`, is treated as a package.
 
 The rule isn't fixable, because choosing a namespace name and rewriting the call sites needs
-judgment. For deliberate exceptions, such as a test harness's `assert` and `should`, use
-`// deno-lint-ignore lint-rules/namespace-imports`.
+judgment. For deliberate exceptions, use `// deno-lint-ignore lint-rules/namespace-imports`.
 
 ## Development
 
