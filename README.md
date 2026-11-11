@@ -105,6 +105,21 @@ bare specifier which the import map points at local code, like `@/cut.js`, is tr
 The rule isn't fixable, because choosing a namespace name and rewriting the call sites needs
 judgment. For deliberate exceptions, use `// deno-lint-ignore lint-rules/namespace-imports`.
 
+### lint-rules/no-default-export
+
+Disallows default exports, so that every export has a name, and is used by that name under a
+namespace import.
+
+```js
+export default function plan() {} // Not allowed.
+export function plan() {} // Allowed; used as cut.plan().
+```
+
+`export { plan as default }` is also reported. Some APIs require a default export, like a Deno lint
+plugin's module, or a framework's config file. For those, use
+`// deno-lint-ignore
+lint-rules/no-default-export`.
+
 ## Development
 
 Run the tests with `deno test`. This project lints itself with its own rules, so `deno lint` also
