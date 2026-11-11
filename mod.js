@@ -22,6 +22,7 @@
 import * as curly from "./rules/curly.js";
 import * as namespaceImports from "./rules/namespace_imports.js";
 import * as noDefaultExport from "./rules/no_default_export.js";
+import * as noStutteringExports from "./rules/no_stuttering_exports.js";
 
 /** The plugin. Rules are reported with the "lint-rules/" prefix, e.g. "lint-rules/curly". */
 // Deno requires a lint plugin's module to export the plugin as its default export.
@@ -32,5 +33,6 @@ export default {
     curly: curly.rule,
     "namespace-imports": namespaceImports.rule,
     "no-default-export": noDefaultExport.rule,
+    "no-stuttering-exports": noStutteringExports.rule,
   },
 };

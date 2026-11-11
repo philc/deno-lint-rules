@@ -105,6 +105,31 @@ bare specifier which the import map points at local code, like `@/cut.js`, is tr
 The rule isn't fixable, because choosing a namespace name and rewriting the call sites needs
 judgment. For deliberate exceptions, use `// deno-lint-ignore lint-rules/namespace-imports`.
 
+### lint-rules/no-stuttering-exports
+
+Disallows exports whose names repeat their module's name. Modules are imported under a namespace
+named for the module (see `namespace-imports`), so the repetition stutters at every call site.
+
+```js
+// In cut.js:
+export function planCuts() {} // Not allowed; used as cut.planCuts().
+export function plan() {} // Allowed; used as cut.plan().
+
+// In file_tree.js:
+export class FileTree {} // Not allowed; used as new fileTree.FileTree().
+export class Tree {} // Allowed; used as new fileTree.Tree().
+```
+
+Names are compared word by word, so `start` in `art.js` is allowed, and a plural matches its
+singular, so `planCuts` in `cut.js` is reported. The module's name is the file's name without its
+extension, or the directory's name, for files named `mod`, `index`, or `main`.
+
+When the module's name is one word, an export named just that word is allowed, like `Workbook` in
+`workbook.js`, since there's no shorter name for the module's main thing. Go does the same:
+`list.List`, `template.Template`.
+
+Test files are skipped. The rule isn't fixable, since renaming an export means updating its callers.
+
 ### lint-rules/no-default-export
 
 Disallows default exports, so that every export has a name, and is used by that name under a
