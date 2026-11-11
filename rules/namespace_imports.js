@@ -60,7 +60,7 @@ function stutters(importedName, moduleName) {
   return a != "" && b != "" && (a.includes(b) || b.includes(a));
 }
 
-export default {
+export const rule = {
   create(context) {
     return {
       ImportDeclaration(node) {

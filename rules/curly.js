@@ -114,7 +114,7 @@ function check(context, statement, body, keyword, templates) {
   });
 }
 
-export default {
+export const rule = {
   create(context) {
     // The bodies to check, as arguments to `check`. They're checked once the whole file has been
     // visited, because re-indenting a body requires knowing where the file's template literals are.
