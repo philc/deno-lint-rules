@@ -20,6 +20,7 @@
  */
 
 import * as curly from "./rules/curly.js";
+import * as maxCommentLength from "./rules/max_comment_length.js";
 import * as namespaceImports from "./rules/namespace_imports.js";
 import * as noDefaultExport from "./rules/no_default_export.js";
 import * as noStutteringExports from "./rules/no_stuttering_exports.js";
@@ -31,6 +32,7 @@ export default {
   name: "lint-rules",
   rules: {
     curly: curly.rule,
+    "max-comment-length": maxCommentLength.rule,
     "namespace-imports": namespaceImports.rule,
     "no-default-export": noDefaultExport.rule,
     "no-stuttering-exports": noStutteringExports.rule,

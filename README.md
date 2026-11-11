@@ -145,6 +145,19 @@ plugin's module, or a framework's config file. For those, use
 `// deno-lint-ignore
 lint-rules/no-default-export`.
 
+### lint-rules/max-comment-length
+
+Requires comment lines to be at most 100 characters, when they can be wrapped. Formatters wrap code,
+but not comments, so long comment lines get through otherwise.
+
+A line is only reported if wrapping would fix it: if the word which crosses the limit would fit on a
+line of its own. A line which is long because of something which can't be broken, like a long URL,
+is allowed. A comment after code on the same line is treated as though it were on its own line,
+since it can be moved above the code.
+
+The limit is 100, and can't be changed, since Deno lint plugins can't be configured. The rule isn't
+fixable, since wrapping comments automatically can mangle lists and code samples in them.
+
 ## Development
 
 Run the tests with `deno test`. This project lints itself with its own rules, so `deno lint` also
